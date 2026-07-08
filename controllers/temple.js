@@ -5,6 +5,26 @@ const apiKey =
   'Ezl0961tEpx2UxTZ5v2uKFK91qdNAr5npRlMT1zLcE3Mg68Xwaj3N8Dyp1R8IvFenrVwHRllOUxF0Og00l0m9NcaYMtH6Bpgdv7N';
 
 exports.create = (req, res) => {
+  // #swagger.tags = ['Temples']
+  // #swagger.summary = 'Create a temple'
+  // #swagger.description = 'Creates a new temple.'
+
+  // #swagger.parameters['apiKey'] = {
+  //   in: 'header',
+  //   description: 'API Key',
+  //   required: true,
+  //   type: 'string'
+  // }
+
+  // #swagger.parameters['body'] = {
+  //   in: 'body',
+  //   description: 'Temple to create',
+  //   required: true,
+  //   schema: {
+  //     $ref: '#/definitions/Temple'
+  //   }
+  // }
+
   // Validate request
   if (!req.body.name) {
     res.status(400).send({ message: 'Content can not be empty!' });
@@ -15,10 +35,11 @@ exports.create = (req, res) => {
   const temple = new Temple({
     temple_id: req.body.temple_id,
     name: req.body.name,
-    description: req.body.description,
     location: req.body.location,
+    dedicated: req.body.dedicated,
+    additionalInfo: req.body.additionalInfo,
   });
-  // Save Temple in the database
+
   temple
     .save(temple)
     .then((data) => {
@@ -32,8 +53,21 @@ exports.create = (req, res) => {
     });
 };
 
+// find all the temples in the database
 exports.findAll = (req, res) => {
+  // #swagger.tags = ['Temples']
+  // #swagger.summary = 'Get all temples'
+  // #swagger.description = 'Returns all temples stored in the database.'
+
+  // #swagger.parameters['apiKey'] = {
+  //   in: 'header',
+  //   description: 'API Key',
+  //   required: true,
+  //   type: 'string'
+  // }
+
   console.log(req.header('apiKey'));
+
   if (req.header('apiKey') === apiKey) {
     Temple.find(
       {},
@@ -62,14 +96,33 @@ exports.findAll = (req, res) => {
 
 // Find a single Temple with an id
 exports.findOne = (req, res) => {
+  // #swagger.tags = ['Temples']
+  // #swagger.summary = 'Get one temple'
+  // #swagger.description = 'Returns a temple by its temple_id.'
+
+  // #swagger.parameters['temple_id'] = {
+  //   in: 'path',
+  //   description: 'Temple ID',
+  //   required: true,
+  //   type: 'integer'
+  // }
+
+  // #swagger.parameters['apiKey'] = {
+  //   in: 'header',
+  //   description: 'API Key',
+  //   required: true,
+  //   type: 'string'
+  // }
+
   const temple_id = req.params.temple_id;
+
   if (req.header('apiKey') === apiKey) {
     Temple.find({ temple_id: temple_id })
       .then((data) => {
         if (!data)
-          res
-            .status(404)
-            .send({ message: 'Not found Temple with id ' + temple_id });
+          res.status(404).send({
+            message: 'Not found Temple with id ' + temple_id,
+          });
         else res.send(data[0]);
       })
       .catch((err) => {
@@ -81,6 +134,9 @@ exports.findOne = (req, res) => {
     res.send('Invalid apiKey, please read the documentation.');
   }
 };
+
+
+
 
 // // Update a Temple by the id in the request
 // exports.update = (req, res) => {

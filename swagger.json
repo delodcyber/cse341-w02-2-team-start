@@ -13,7 +13,11 @@
   "paths": {
     "/temples/": {
       "get": {
-        "description": "",
+        "tags": [
+          "Temples"
+        ],
+        "summary": "Get all temples",
+        "description": "Returns all temples stored in the database.",
         "parameters": [
           {
             "name": "apiKey",
@@ -25,14 +29,26 @@
           "200": {
             "description": "OK"
           },
+          "404": {
+            "description": "Not Found"
+          },
           "500": {
             "description": "Internal Server Error"
           }
         }
       },
       "post": {
-        "description": "",
+        "tags": [
+          "Temples"
+        ],
+        "summary": "Create a temple",
+        "description": "Creates a new temple.",
         "parameters": [
+          {
+            "name": "apiKey",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
@@ -45,10 +61,13 @@
                 "temple_id": {
                   "example": "any"
                 },
-                "description": {
+                "location": {
                   "example": "any"
                 },
-                "location": {
+                "dedicated": {
+                  "example": "any"
+                },
+                "additionalInfo": {
                   "example": "any"
                 }
               }
@@ -62,6 +81,9 @@
           "400": {
             "description": "Bad Request"
           },
+          "404": {
+            "description": "Not Found"
+          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -70,7 +92,11 @@
     },
     "/temples/{temple_id}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Temples"
+        ],
+        "summary": "Get one temple",
+        "description": "Returns a temple by its temple_id.",
         "parameters": [
           {
             "name": "temple_id",
@@ -94,6 +120,33 @@
           "500": {
             "description": "Internal Server Error"
           }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Temple": {
+      "type": "object",
+      "properties": {
+        "temple_id": {
+          "type": "number",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "Aba Nigeria Temple"
+        },
+        "location": {
+          "type": "string",
+          "example": "Aba, Nigeria"
+        },
+        "dedicated": {
+          "type": "string",
+          "example": "2005-08-07"
+        },
+        "additionalInfo": {
+          "type": "boolean",
+          "example": true
         }
       }
     }
